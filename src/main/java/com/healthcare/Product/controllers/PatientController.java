@@ -11,43 +11,45 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.Product.models.Patient;
 import com.healthcare.Product.services.PatientService;
 
-@RestController("/")
+@RestController
+@RequestMapping("/patient")
 public class PatientController {
 	
 	@Autowired
 	private PatientService patientService;
 	
-	@GetMapping("/patient")
+	@GetMapping("/")
 	public ResponseEntity<List<Patient>> getAllPatients() {
 		List<Patient> patients = patientService.getAllPatient();
 		return ResponseEntity.ok(patients);
 	}
 	
-	@GetMapping("/patient/{patientid}")
-	public ResponseEntity<Patient> getPatient(@PathVariable int patientid) {
+	@GetMapping("/{patientid}")
+	public ResponseEntity<Patient> getPatient(@PathVariable("patientid") Integer patientid) {
 		Patient patient = patientService.getPatient(patientid);
 		return new ResponseEntity<>(patient, HttpStatus.FOUND);
 	}
 	
-	@PostMapping("/patient")
-	public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
+	@PostMapping("/")
+	public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
 		Patient newPatient = patientService.createPatient(patient);
 		return new ResponseEntity<>(newPatient, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/patient")
+	@PutMapping("/")
 	public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient) {
 		Patient updatedPatient = patientService.updatePatient(patient);
 		return new ResponseEntity<>(updatedPatient, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/patient/{patientid}")
-	public ResponseEntity<Patient> deletePatient(@PathVariable int patientid) {
+	@DeleteMapping("/{patientid}")
+	public ResponseEntity<Patient> deletePatient(@PathVariable("patientid") Integer patientid) {
 		Patient deletedPatient = patientService.getPatient(patientid);
 		patientService.deletePatient(patientid);
 		return new ResponseEntity<>(deletedPatient, HttpStatus.OK);

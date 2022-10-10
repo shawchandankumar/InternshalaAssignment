@@ -1,24 +1,26 @@
 package com.healthcare.Product.models;
 
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Document(collection = "Patient")
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
 	
+	@Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int patientid;
+	private long patientId;
 	private String patientname;
 	private String patientContactNo;
 

@@ -16,9 +16,13 @@ public class PatientServiceImpl implements PatientService {
 	
 	@Autowired
 	private PatientRepository patientRepo;
+	
+	@Autowired
+	SequenceGeneratorService sequenceGeneratorService;
 
 	@Override
 	public Patient createPatient(Patient patient) {
+		patient.setPatientId(sequenceGeneratorService.generateSequence(Patient.SEQUENCE_NAME));
 		return patientRepo.save(patient);
 	}
 
@@ -28,9 +32,8 @@ public class PatientServiceImpl implements PatientService {
 	}
 	
 	@Override
-	public Patient getPatient(int id) {
-		return patientRepo.findById(id).orElseThrow(() -> 
-		new ResourceNotFoundException("Patient", "patient id", id));
+	public Patient getPatient(Integer id) {
+		return patientRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Patient", "patiendId", id));
 	}
 
 	@Override
@@ -39,8 +42,9 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public void deletePatient(int id) {
-		patientRepo.deleteById(id);
+	public void deletePatient(Integer id) {
+		Patient deletedPatient = patientRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Patient", "patiendId", id));
+		patientRepo.delete(deletedPatient);
 	}
 
 }
