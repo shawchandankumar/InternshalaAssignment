@@ -30,6 +30,11 @@ public class PatientController {
 		return ResponseEntity.ok(patients);
 	}
 	
+	@GetMapping("/hello")
+	public ResponseEntity<String> dummyController() {
+		return ResponseEntity.ok("Yeah!! Its Working");
+	}
+	
 	@GetMapping("/{patientid}")
 	public ResponseEntity<Patient> getPatient(@PathVariable("patientid") Integer patientid) {
 		Patient patient = patientService.getPatient(patientid);
